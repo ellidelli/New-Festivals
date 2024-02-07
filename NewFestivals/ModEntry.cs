@@ -7,34 +7,26 @@ using StardewValley;
 
 namespace NewFestivals
 {
-    /// <summary>The mod entry point.</summary>
+    //mod entry point
     public class ModEntry : Mod
     {
-        /*********
-        ** Public methods
-        *********/
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            //add to the game loop to check what the day is
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
         }
 
-
-        /*********
-        ** Private methods
-        *********/
-        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void OnDayStarted(object sender, EventArgs e)
         {
-            // ignore if player hasn't loaded a save yet
-            if (!Context.IsWorldReady)
-                return;
+            //access smapi api
+            IModHelper helper = this.Helper;
 
-            // print button presses to the console window
-            this.Monitor.Log($"{Game1.player.Name} pressed {e.Button}.", LogLevel.Debug);
+            //check if it's fall 28
+            if (Game1.currentSeason == "fall" && Game1.dayOfMonth == 28)
+            {
+                //display a message in the smapi console
+                this.Monitor.Log("it is fall 28", LogLevel.Debug);
+            }
         }
     }
 }
